@@ -16,6 +16,11 @@ public class Method_03_Test {
     interface IDao {
         List<Person> findAll();
 
+        public static IDao getDefaultInstance() {
+        	Method_03_Test M03T = new Method_03_Test();
+        	DaoA daoA = M03T.new DaoA();
+        	return daoA;
+        }
         // TODO créer une méthode statique IDao getDefaultInstance()
         // TODO cette méthode retourne une instance de la classe DaoA
     }
@@ -35,7 +40,7 @@ public class Method_03_Test {
     @Test
     public void test_getDefaultInstance() throws Exception {
         // TODO invoquer la méthode getDefaultInstance() pour que le test soit passant
-        IDao result = null;
+        IDao result = IDao.getDefaultInstance();
 
         assert result.findAll().size() == 20;
     }
