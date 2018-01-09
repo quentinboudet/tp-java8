@@ -22,9 +22,10 @@ public class Stream_01_Test {
     public void test_stream_filter() throws Exception {
         List<Pizza> pizzas = new Data().getPizzas();
 
-        // TODO récupérer la liste des pizzas dont le prix est >= 1300
-        // TODO utiliser l'API Stream
-        List<Pizza> result = null;
+        // récupérer la liste des pizzas dont le prix est >= 1300
+        // utiliser l'API Stream
+        
+        List<Pizza> result = pizzas.stream().filter(p -> p.getPrice() >= 1300).collect(Collectors.toList());
 
         assertThat(result, hasSize(3));
         assertThat(result, everyItem(hasProperty("price", anyOf(equalTo(1300), greaterThan(1300)))));
@@ -35,11 +36,11 @@ public class Stream_01_Test {
 
         List<Pizza> pizzas = new Data().getPizzas();
 
-        // TODO valider si au moins une pizza à un prix >= 1300
-        Boolean result1 = null;
+        // valider si au moins une pizza à un prix >= 1300
+        Boolean result1 = pizzas.stream().filter(p -> p.getPrice() >= 1300).count() > 0;
 
-        // TODO valider si au moins une pizza à un prix >= 2000
-        Boolean result2 = null;
+        // valider si au moins une pizza à un prix >= 2000
+        Boolean result2 = pizzas.stream().filter(p -> p.getPrice() >= 2000).count() > 0;
 
         assertThat(result1, is(true));
         assertThat(result2, is(false));
@@ -50,11 +51,11 @@ public class Stream_01_Test {
 
         List<Pizza> pizzas = new Data().getPizzas();
 
-        // TODO valider que toutes les pizzas ont un prix >= 1300
-        Boolean result1 = null;
+        //  valider que toutes les pizzas ont un prix >= 1300
+        Boolean result1 = pizzas.stream().filter(p -> p.getPrice() >= 1300).count() == pizzas.size();
 
-        // TODO valider que toutes les pizzas ont un prix >= 900
-        Boolean result2 = null;
+        //  valider que toutes les pizzas ont un prix >= 900
+        Boolean result2 = pizzas.stream().filter(p -> p.getPrice() >= 900).count() == pizzas.size();
 
         assertThat(result1, is(false));
         assertThat(result2, is(true));
@@ -66,9 +67,9 @@ public class Stream_01_Test {
 
         List<Pizza> pizzas = new Data().getPizzas();
 
-        // TODO valider qu'aucune pizza n'a un prix >= 2000
-        Boolean result1 = null;
-
+        //  valider qu'aucune pizza n'a un prix >= 2000
+        Boolean result1 =  pizzas.stream().filter(p -> p.getPrice() >= 2000).count() == 0;
+        
         assertThat(result1, is(true));
     }
 
@@ -77,10 +78,13 @@ public class Stream_01_Test {
 
         List<Order> orders = new Data().getOrders();
 
-        // TODO récupérer toutes les commandes dont
-        // TODO le prénom du client est "Johnny"
-        // TODO dont au moins une pizza a un prix >= 1300
-        List<Order> result = null;
+        //  récupérer toutes les commandes dont
+        //  le prénom du client est "Johnny"
+        //  dont au moins une pizza a un prix >= 1300
+        List<Order> result = orders.stream()
+        		.filter(o -> o.getCustomer().getFirstname().equals("Johnny") 
+        				&& o.getPizzas().stream().filter(p -> p.getPrice() >= 1300).count() > 0)
+        		.collect(Collectors.toList());
 
         assertThat(result, hasSize(1));
         assertThat(result.get(0), hasProperty("id", is(8)));
@@ -90,8 +94,10 @@ public class Stream_01_Test {
     public void test_stream_findFirst() throws Exception {
         List<Order> orders = new Data().getOrders();
 
-        // TODO récupérer une commande faite par un client dont le prénom est "Sophie"
-        Optional<Order> result = null;
+        // récupérer une commande faite par un client dont le prénom est "Sophie"
+        Optional<Order> result = orders.stream()
+        		.filter(o -> o.getCustomer().getFirstname().equals("Sophie"))
+        		.findFirst();
 
         assertThat(result.isPresent(), is(false));
     }
@@ -100,8 +106,9 @@ public class Stream_01_Test {
     public void test_stream_max() throws Exception {
         List<Pizza> pizzas = new Data().getPizzas();
 
-        // TODO Trouver la pizza la plus chère
-        Optional<Pizza> result = null;
+        //  Trouver la pizza la plus chère
+        Comparator<Pizza> comp = (p1, p2) -> Integer.compare( p1.getPrice(), p2.getPrice());
+        Optional<Pizza> result = pizzas.stream().max(comp);
 
         assertThat(result.isPresent(), is(true));
         assertThat(result.get(), hasProperty("id", is(5)));
@@ -115,8 +122,9 @@ public class Stream_01_Test {
 
         List<Pizza> pizzas = new Data().getPizzas();
 
-        // TODO Trouver la pizza la moins chère dont le prix est >= 950
-        Optional<Pizza> result = null;
+        //  Trouver la pizza la moins chère dont le prix est >= 950
+        Comparator<Pizza> comp = (p1, p2) -> Integer.compare( p1.getPrice(), p2.getPrice());
+        Optional<Pizza> result = pizzas.stream().filter(p -> p.getPrice() >= 950).min(comp);
 
         assertThat(result.isPresent(), is(true));
         assertThat(result.get(), hasProperty("id", is(3)));
