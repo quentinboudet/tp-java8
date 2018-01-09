@@ -17,12 +17,12 @@ public class DateAndTime_03_Test {
     public void test_localTime_of() {
 
         // TODO créer un objet LocalTime à l'heure 15h24m02s
-        LocalTime result = null;
+        LocalTime result = LocalTime.of(15, 24, 2);
 
         // TODO valoriser les différentes variables afin de rendre le test passant
-        int hour = 0;
-        int minutes = 0;
-        int second = 0;
+        int hour = result.getHour();
+        int minutes = result.getMinute();
+        int second = result.getSecond();
 
         assertThat(hour, is(15));
         assertThat(minutes, is(24));
@@ -33,13 +33,13 @@ public class DateAndTime_03_Test {
     public void test_localTime_parse() {
 
         // TODO créer un objet LocalTime à l'heure 09h30m00s à l'aide de la méthode parse
-        LocalTime result = null;
+        LocalTime result = LocalTime.parse("09:30:00");
 
 
         // TODO valoriser les différentes variables afin de rendre le test passant
-        int hour = 0;
-        int minutes = 0;
-        int second = 0;
+        int hour = result.getHour();
+        int minutes = result.getMinute();
+        int second = result.getSecond();
 
         assertThat(hour, is(9));
         assertThat(minutes, is(30));
@@ -51,10 +51,10 @@ public class DateAndTime_03_Test {
 
         // TODO créer un objet localTime à l'heure 12h00m00s
         // TODO utiliser la méthode of
-        LocalTime localTime = null;
+        LocalTime localTime = LocalTime.of(12, 0, 0);
 
         // TODO Formatter l'heure pour que le test soit passant
-        String result = null;
+        String result = localTime.format(DateTimeFormatter.ofPattern("hh:mm"));
 
         assertThat(result, is("12:00"));
     }
